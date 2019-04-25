@@ -1,0 +1,26 @@
+DROP TABLE "comment";
+DROP TABLE "orders";
+DROP TYPE "status";
+DROP SEQUENCE "auto_id_orders";
+DROP SEQUENCE "auto_id_comments";
+
+CREATE TYPE status AS ENUM ('NEW', 'IN_ACTION', 'DONE', 'REFUSED');
+CREATE SEQUENCE auto_id_orders;
+CREATE SEQUENCE auto_id_comments;
+CREATE TABLE "orders" (
+    id integer NOT NULL DEFAULT nextval('auto_id_orders') PRIMARY KEY,
+    description character varying(255),
+    status status
+);
+CREATE TABLE "comment"
+(
+    id integer NOT NULL DEFAULT nextval('auto_id_comments') PRIMARY KEY,
+    id_order integer NOT NULL REFERENCES "orders"(id),
+    description character varying(255)
+);
+
+
+INSERT INTO "order"(
+  description, status)
+  VALUES ('Chess', 'NEW')
+  RETURNING id;
